@@ -59,8 +59,9 @@ libmm-vdec-inc          := $(LOCAL_PATH)/inc
 libmm-vdec-inc          += $(call project-path-for,qcom-media)/mm-video-v4l2/vidc/common/inc
 libmm-vdec-inc          += $(call project-path-for,qcom-media)/mm-core/inc
 libmm-vdec-inc          += $(TARGET_OUT_HEADERS)/adreno
+libmm-vdec-inc          += $(LOCAL_PATH)/../../../../display/libqdutils
 libmm-vdec-inc          += $(TOP)/frameworks/native/include/media/openmax
-libmm-vdec-inc          += $(TOP)/frameworks/native/include/media/hardware
+libmm-vdec-inc          += $(TOP)/frameworks/native/include
 libmm-vdec-inc          += $(TOP)/frameworks/native/libs/nativewindow/include
 libmm-vdec-inc          += $(TOP)/frameworks/native/libs/arect/include
 libmm-vdec-inc          += $(TOP)/frameworks/native/libs/nativebase/include
@@ -99,7 +100,7 @@ LOCAL_VENDOR_MODULE             := true
 LOCAL_CFLAGS                    := $(libmm-vdec-def) -Werror
 LOCAL_C_INCLUDES                += $(libmm-vdec-inc)
 
-LOCAL_HEADER_LIBRARIES := display_headers generated_kernel_headers
+LOCAL_HEADER_LIBRARIES := display_headers generated_kernel_headers media_plugin_headers
 
 LOCAL_PRELINK_MODULE    := false
 LOCAL_SHARED_LIBRARIES  := liblog libutils libui libcutils libdl

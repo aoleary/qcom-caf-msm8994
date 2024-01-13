@@ -58,7 +58,7 @@
 #include <cutils/str_parms.h>
 #include <cutils/properties.h>
 #include <cutils/atomic.h>
-#include <processgroup/sched_policy.h>
+#include <cutils/sched_policy.h>
 
 #include <hardware/audio_effect.h>
 #include <system/thread_defs.h>
@@ -1978,13 +1978,22 @@ static int out_set_format(struct audio_stream *stream __unused,
     return -ENOSYS;
 }
 
-/* must be called with out->lock locked */
-static int out_standby_l(struct audio_stream *stream)
+static int out_standby(struct audio_stream *stream)
 {
     struct stream_out *out = (struct stream_out *)stream;
     struct audio_device *adev = out->dev;
 
-    ALOGVV("%s",__func__);
+    ALOGD("%s: enter: stream (%p) usecase(%d: %s)", __func__,
+          stream, out->usecase, use_case_table[out->usecase]);
+    if (out->usecase == USECASE_COMPRESS_VOIP_CALL) {
+        /* Ignore standby in case of voip call because the voip output
+         * stream is closed in adev_close_output_stream()
+         */
+        ALOGD("%s: Ignore Standby in VOIP call", __func__);
+        return 0;
+    }
+
+    lock_output_stream(out);
     if (!out->standby) {
         if (adev->adm_deregister_stream)
             adev->adm_deregister_stream(adev->adm_data, out->handle);
@@ -2015,19 +2024,6 @@ static int out_standby_l(struct audio_stream *stream)
         stop_output_stream(out);
         pthread_mutex_unlock(&adev->lock);
     }
-    return 0;
-}
-
-static int out_standby(struct audio_stream *stream)
-{
-    struct stream_out *out = (struct stream_out *)stream;
-
-    ALOGVV("%s",__func__);
-    ALOGV("%s: enter: usecase(%d: %s)", __func__,
-          out->usecase, use_case_table[out->usecase]);
-
-    lock_output_stream(out);
-    out_standby_l(stream);
     pthread_mutex_unlock(&out->lock);
     ALOGV("%s: exit", __func__);
     return 0;
@@ -2095,19 +2091,7 @@ static int out_set_parameters(struct audio_stream *stream, const char *kvpairs)
     err = str_parms_get_str(parms, AUDIO_PARAMETER_STREAM_ROUTING, value, sizeof(value));
     if (err >= 0) {
         val = atoi(value);
-
         lock_output_stream(out);
-
-        // The usb driver needs to be closed after usb device disconnection
-        // otherwise audio is no longer played on the new usb devices.
-        // By forcing the stream in standby, the usb stack refcount drops to 0
-        // and the driver is closed.
-        if (out->usecase == USECASE_AUDIO_PLAYBACK_OFFLOAD && val == AUDIO_DEVICE_NONE &&
-                audio_is_usb_out_device(out->devices)) {
-            ALOGD("%s() putting the usb device in standby after disconnection", __func__);
-            out_standby_l(&out->stream.common);
-        }
-
         pthread_mutex_lock(&adev->lock);
 
         /*
@@ -2408,7 +2392,7 @@ static ssize_t out_write(struct audio_stream_out *stream, const void *buffer,
         ret = compress_write(out->compr, buffer, bytes);
         if (ret < 0)
             ret = -errno;
-        ALOGVV("%s: writing buffer (%zu bytes) to compress device returned %zd", __func__, bytes, ret);
+        ALOGVV("%s: writing buffer (%d bytes) to compress device returned %d", __func__, bytes, ret);
         if (ret >= 0 && ret < (ssize_t)bytes) {
             ALOGD("No space available in compress driver, post msg to cb thread");
             send_offload_cmd_l(out, OFFLOAD_CMD_WAIT_FOR_BUFFER);
@@ -2439,7 +2423,7 @@ static ssize_t out_write(struct audio_stream_out *stream, const void *buffer,
             if (out->muted)
                 memset((void *)buffer, 0, bytes);
 
-            ALOGVV("%s: writing buffer (%zu bytes) to pcm device", __func__, bytes);
+            ALOGVV("%s: writing buffer (%d bytes) to pcm device", __func__, bytes);
 
             if (adev->adm_request_focus)
                 adev->adm_request_focus(adev->adm_data, out->handle);

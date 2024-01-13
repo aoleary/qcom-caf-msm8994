@@ -89,6 +89,9 @@ struct MetaData_t {
     /* The supported formats are defined in gralloc_priv.h to
      * support legacy code*/
     uint32_t s3dFormat;
+
+    /* Set by camera to program the VT Timestamp */
+    uint64_t vtTimeStamp;
 };
 
 enum DispParamType {
@@ -104,6 +107,7 @@ enum DispParamType {
     UPDATE_COLOR_SPACE = 0x0200,
     MAP_SECURE_BUFFER = 0x400,
     S3D_FORMAT = 0x800,
+    SET_VT_TIMESTAMP = 0x1000,
 };
 
 struct private_handle_t;

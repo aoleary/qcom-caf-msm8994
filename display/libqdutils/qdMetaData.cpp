@@ -95,6 +95,9 @@ int setMetaData(private_handle_t *handle, DispParamType paramType,
         case S3D_FORMAT:
             data->s3dFormat = *((uint32_t *)param);
             break;
+        case SET_VT_TIMESTAMP:
+            data->vtTimeStamp = *((uint64_t *)param);
+            break;
         default:
             ALOGE("Unknown paramType %d", paramType);
             break;
