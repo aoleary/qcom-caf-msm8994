@@ -21,10 +21,10 @@ LOCAL_MODULE                  := gralloc.$(TARGET_BOARD_PLATFORM)
 LOCAL_VENDOR_MODULE           := true
 LOCAL_MODULE_RELATIVE_PATH    := hw
 LOCAL_MODULE_TAGS             := optional
-LOCAL_SHARED_LIBRARIES        := $(common_libs) libmemalloc libqdMetaData
+LOCAL_SHARED_LIBRARIES        := $(common_libs) libmemalloc libqdMetaData libhardware
 LOCAL_SHARED_LIBRARIES        += libqdutils libGLESv1_CM
 LOCAL_CFLAGS                  := $(common_flags) -DLOG_TAG=\"qdgralloc\"
-LOCAL_HEADER_LIBRARIES        := display_headers generated_kernel_headers
+LOCAL_HEADER_LIBRARIES        := display_headers generated_kernel_headers libhardware_headers
 LOCAL_SRC_FILES               := gpu.cpp gralloc.cpp framebuffer.cpp mapper.cpp
 
 include $(BUILD_SHARED_LIBRARY)
@@ -35,9 +35,9 @@ include $(CLEAR_VARS)
 LOCAL_MODULE                  := libmemalloc
 LOCAL_VENDOR_MODULE           := true
 LOCAL_MODULE_TAGS             := optional
-LOCAL_SHARED_LIBRARIES        := $(common_libs) libqdutils libdl
+LOCAL_SHARED_LIBRARIES        := $(common_libs) libqdutils libdl libhardware
 LOCAL_CFLAGS                  := $(common_flags) -DLOG_TAG=\"qdmemalloc\"
-LOCAL_HEADER_LIBRARIES        := display_headers generated_kernel_headers
+LOCAL_HEADER_LIBRARIES        := display_headers generated_kernel_headers libhardware_headers
 LOCAL_SRC_FILES               := ionalloc.cpp alloc_controller.cpp
 
 include $(BUILD_SHARED_LIBRARY)
