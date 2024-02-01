@@ -27,7 +27,6 @@ libmm-vidc-inc      += $(TOP)/frameworks/av/include/media/stagefright
 
 LOCAL_MODULE                    := libOmxVidcCommon
 LOCAL_MODULE_TAGS               := optional
-LOCAL_VENDOR_MODULE             := true
 LOCAL_CFLAGS                    := $(libmm-vidc-def)
 LOCAL_C_INCLUDES                := $(libmm-vidc-inc)
 

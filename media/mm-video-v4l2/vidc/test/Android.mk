@@ -2,7 +2,6 @@ LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE                  := msm-vidc-test
-LOCAL_VENDOR_MODULE           := true
 LOCAL_PRELINK_MODULE          := false
 LOCAL_HEADER_LIBRARIES        := generated_kernel_headers
 LOCAL_SRC_FILES               := msm_vidc_test.c

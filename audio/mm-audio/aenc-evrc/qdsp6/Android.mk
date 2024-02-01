@@ -28,7 +28,6 @@ libOmxEvrcEnc-inc       := $(LOCAL_PATH)/inc
 
 LOCAL_MODULE             := libOmxEvrcEnc
 LOCAL_MODULE_TAGS        := optional
-LOCAL_VENDOR_MODULE      := true
 LOCAL_CFLAGS            := $(libOmxEvrcEnc-def)
 LOCAL_C_INCLUDES        := $(libOmxEvrcEnc-inc)
 LOCAL_PRELINK_MODULE    := false

@@ -28,7 +28,6 @@ libOmxAmrEnc-inc       := $(LOCAL_PATH)/inc
 
 LOCAL_MODULE             := libOmxAmrEnc
 LOCAL_MODULE_TAGS        := optional
-LOCAL_VENDOR_MODULE     := true
 LOCAL_CFLAGS            := $(libOmxAmrEnc-def)
 LOCAL_C_INCLUDES        := $(libOmxAmrEnc-inc)
 LOCAL_PRELINK_MODULE    := false

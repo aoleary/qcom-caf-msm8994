@@ -37,7 +37,6 @@ LOCAL_MODULE_TAGS := optional
 
 LOCAL_MODULE_RELATIVE_PATH := soundfx
 LOCAL_MODULE:= libqcompostprocbundle
-LOCAL_VENDOR_MODULE := true
 
 LOCAL_C_INCLUDES := \
 	external/tinyalsa/include \
@@ -70,7 +69,6 @@ LOCAL_CFLAGS += -DHW_ACC_HPX
 endif
 
 LOCAL_MODULE:= libhwacceffectswrapper
-LOCAL_VENDOR_MODULE := true
 
 include $(BUILD_STATIC_LIBRARY)
 endif
