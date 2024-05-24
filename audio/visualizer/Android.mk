@@ -28,11 +28,15 @@ LOCAL_SHARED_LIBRARIES := \
 	libdl \
 	libtinyalsa
 
+LOCAL_HEADER_LIBRARIES := libsystem_headers libaudio_system_headers
+
 LOCAL_MODULE_RELATIVE_PATH := soundfx
 LOCAL_MODULE:= libqcomvisualizer
+LOCAL_VENDOR_MODULE := true
 
 LOCAL_C_INCLUDES := \
 	external/tinyalsa/include \
+        hardware/libhardware/include \
 	$(call include-path-for, audio-effects)
 
 include $(BUILD_SHARED_LIBRARY)

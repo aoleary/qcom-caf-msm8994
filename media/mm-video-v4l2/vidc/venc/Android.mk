@@ -75,6 +75,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE                    := libOmxVenc
 LOCAL_MODULE_TAGS               := optional
+LOCAL_VENDOR_MODULE             := true
 LOCAL_CFLAGS                    := $(libmm-venc-def) -Wno-misleading-indentation
 LOCAL_C_INCLUDES                := $(libmm-venc-inc)
 
@@ -82,7 +83,7 @@ LOCAL_HEADER_LIBRARIES := display_headers generated_kernel_headers media_plugin_
 
 LOCAL_PRELINK_MODULE      := false
 LOCAL_SHARED_LIBRARIES    := liblog libutils libcutils \
-                             libc2dcolorconvert libdl libgui
+                             libc2dcolorconvert libdl libgui_vendor
 LOCAL_STATIC_LIBRARIES    := libOmxVidcCommon
 
 LOCAL_SRC_FILES   := src/omx_video_base.cpp
@@ -103,6 +104,7 @@ libmm-venc-inc      += $(TARGET_OUT_HEADERS)/mm-video/swvenc
 LOCAL_MODULE                    := libOmxSwVencMpeg4
 
 LOCAL_MODULE_TAGS               := optional
+LOCAL_VENDOR_MODULE             := true
 LOCAL_CFLAGS                    := $(libmm-venc-def)
 LOCAL_C_INCLUDES                := $(libmm-venc-inc)
 
@@ -110,7 +112,7 @@ LOCAL_HEADER_LIBRARIES := generated_kernel_headers
 
 LOCAL_PRELINK_MODULE      := false
 LOCAL_SHARED_LIBRARIES    := liblog libutils libcutils \
-                             libc2dcolorconvert libdl libgui
+                             libc2dcolorconvert libdl libgui_vendor
 LOCAL_SHARED_LIBRARIES    += libMpeg4SwEncoder
 LOCAL_STATIC_LIBRARIES    := libOmxVidcCommon
 

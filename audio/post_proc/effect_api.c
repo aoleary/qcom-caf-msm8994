@@ -55,6 +55,7 @@
 #endif
 
 #include <stdbool.h>
+#include <stdlib.h>
 #include <log/log.h>
 #include <errno.h>
 #include <tinyalsa/asoundlib.h>
